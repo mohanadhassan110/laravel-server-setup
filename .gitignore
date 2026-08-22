@@ -1,0 +1,22 @@
+# Secrets and machine-specific state produced by the setup scripts.
+.setup-config
+*.env
+!*.env.example
+
+# Credentials snippets written by scripts/04.
+laravel-db.env
+*credentials*
+
+# OS / editor noise.
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Temporary files.
+tmp/
+*.log
+*.bak*
+*.orig-backup
