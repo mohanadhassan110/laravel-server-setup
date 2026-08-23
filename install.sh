@@ -159,11 +159,17 @@ menu_loop() {
                 show_menu
                 continue
                 ;;
-            *[!0-9]*)
-                log_warn "Please enter numbers only, comma-separated (e.g. 1,2,3)."
-                continue
-                ;;
             *)
+                # Menu input must look like "3" or "1,4" BEFORE we hand it to
+                # run_selected(), otherwise a typo would abort the whole app.
+                if [[ ! "$choice" =~ ^[0-9]+(,[0-9]+)*$ ]]; then
+                    log_warn "Invalid input '${choice}'. Enter 'a', step numbers like 1 or 2,4, 's' or 'q'."
+                    continue
+                fi
+                if ! valid_step_range "$choice"; then
+                    log_warn "Step numbers must be between 1 and ${#STEP_FILES[@]}."
+                    continue
+                fi
                 if run_selected "$choice"; then
                     :
                 else
@@ -172,6 +178,16 @@ menu_loop() {
                 break
                 ;;
         esac
+    done
+}
+
+# valid_step_range "2,4" -> true when every number fits 1..${#STEP_FILES[@]}.
+valid_step_range() {
+    local selection="$1" part
+    local total="${#STEP_FILES[@]}"
+    IFS=',' read -r -a parts <<<"$selection"
+    for part in "${parts[@]}"; do
+        (( part >= 1 && part <= total )) || return 1
     done
 }
 
