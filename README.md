@@ -47,7 +47,7 @@ Every step is **safe to re-run**: scripts detect what is already done and skip i
 ## Installation
 
 ```bash
-git clone https://github.com/<your-username>/laravel-server-setup.git
+git clone https://github.com/mohanadhassan110/laravel-server-setup.git
 cd laravel-server-setup
 sudo bash install.sh
 ```
